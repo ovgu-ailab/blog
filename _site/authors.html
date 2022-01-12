@@ -1,0 +1,8 @@
+{% for authors in site.authors %}
+  <h2>
+    <a href="{{ staff_member.url }}">
+      {{ author.title }}
+    </a>
+  </h2>
+  <p>{{ staff_member.content | markdownify }}</p>
+{% endfor %}
