@@ -204,8 +204,8 @@ will be normalized to mean 0 and variance of 1, and the fake samples will also b
 normalized to mean 0 and variance of 1[^2].
 
 [^2]: To be precise, the _features_ after the dense layers are normalized. However,
-these are just linear transformations, so the (also linear) normalization happening after the first
-dense layer, but before the non-linearity, results in the same phenomenon.
+      these are just linear transformations, so the (also linear) normalization happening after the first
+      dense layer, but before the non-linearity, results in the same phenomenon.
 
 This means that, if the fake samples are transformed by an affine-linear function
 (shifted and/or scaled by a constant), this will be normalized away by `D`, making
@@ -237,7 +237,7 @@ This implies a straightforward solution: Use _joint_ batches to train
 This is what the training step for `D` would look like: 
 
 [^3]: Note that reference implementations such as the Tensorflow/Pytorch DCGAN
-code use split batches!
+      code use split batches!
 
 ```python
 # train d
@@ -291,9 +291,9 @@ The only explanation is that somehow, `G` and `D` must be playing different game
 Let's finally try to fix this.
 
 [^4]: To be precise, for `G` we are only using half the loss (only on generated
-samples). However, since the `D` loss is the average between that and the loss
-on real samples, if the `G` loss is, say, 4, the `D` loss would have to be at 
-least 2.
+      samples). However, since the `D` loss is the average between that and the loss
+      on real samples, if the `G` loss is, say, 4, the `D` loss would have to be at 
+      least 2.
 
 ### A Reminder About Batchnorm
 Both failures shown above _have to_ be related to Batchnorm:
