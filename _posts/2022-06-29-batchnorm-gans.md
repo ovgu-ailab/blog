@@ -48,7 +48,7 @@ standard normal distribution in this case, although this could be any distributi
 at all) into data samples. We will use Tensorflow/Keras, although none of the
 issues discussed in this post are framework-specific.
 
-![Real and noise distributions](post_data/2022-06-29-batchnorm-gans/figure_data.svg)
+![Real and noise distributions](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_data.svg)
 
 First, we set up simple networks for `G` and `D`:
 
@@ -107,7 +107,7 @@ Note that we always put in
 the full population (2048 samples) as the batch in each training step. Here are
 the resulting samples:
 
-![Samples of successfully trained GAN](post_data/2022-06-29-batchnorm-gans/figure_trained_basic_works.svg)
+![Samples of successfully trained GAN](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_basic_works.svg)
 
 As we can see, the generated samples match the data quite well. The loss for `D`
 in this case is around `ln(2) ~= 0.69`, which indicates outputs of 0.5 for all samples,
@@ -135,13 +135,13 @@ discriminator = tf.keras.Sequential(
 
 We train the network in the exact same way as before and get this result:
 
-![GAN trained with BN in D](post_data/2022-06-29-batchnorm-gans/figure_trained_bn_works_kinda.svg)
+![GAN trained with BN in D](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_bn_works_kinda.svg)
 
 It doesn't look quite right, does it? Almost seems like the entire distribution
 is slightly shifted. Knowing that GANs have stability issues, we might just try
 again with a new initialization:
 
-![Another attempt at a GAN trained with BN in D](post_data/2022-06-29-batchnorm-gans/figure_trained_bn_works_kinda2.svg)
+![Another attempt at a GAN trained with BN in D](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_bn_works_kinda2.svg)
 
 Now it's definitely shifted in a different direction! And yet, in both cases,
 the observed loss is again around `ln(2)`, indicating that `D` cannot tell the
@@ -169,14 +169,14 @@ samples if it can somehow do this without `D` noticing.
 
 Using this loss, we get the results below:
 
-![One messed up GAN](post_data/2022-06-29-batchnorm-gans/figure_trained_bn_shifted.svg)
+![One messed up GAN](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_bn_shifted.svg)
 
 This time, the shift is very obvious. Still, `D` still incurs a loss of `ln(2)`,
 meaning it is completely fooled by the generated samples!
 Interestingly, if we remove BN but keep the additional loss term, we get this
 result:
 
-![No BN, no problem](post_data/2022-06-29-batchnorm-gans/figure_trained_basic_works_shifted.svg)
+![No BN, no problem](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_basic_works_shifted.svg)
 
 No shift has occurred! It seems that without BN, `D` picks up on the shift and
 the resulting worse loss for `G` causes it to keep the samples where they should be.
@@ -252,7 +252,7 @@ d_opt.apply_gradients(zip(d_grads, discriminator.trainable_variables))
 We train a model (with BN and without the additional loss term) 
 with this and get the results below.
 
-![We didn't fix it.](post_data/2022-06-29-batchnorm-gans/figure_trained_bn_jointbatch.svg)
+![We didn't fix it.](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_bn_jointbatch.svg)
 
 Oh no... This looks bad. Even stranger, the losses are 6.62 for `G` and 0.17 for `D`.
 Remember the equilibrium point 0.69? The loss for `G` is _higher_ indicating that
@@ -280,7 +280,7 @@ We are calling `D` with `training=True`. But if you think about it, we aren't re
 training `D` here, are we? What if we just set `training=False`? It seems more
 appropriate. Well, we get results like below:
 
-![Not appropriate!](post_data/2022-06-29-batchnorm-gans/figure_trained_bn_trainfalse.svg)
+![Not appropriate!](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_bn_trainfalse.svg)
 
 This is even worse than above! Losses are 4.23 (`G`) and 0.007 (`D`), once again 
 indicating that
@@ -321,7 +321,7 @@ will likely be quite different (especially early in training). This results in
 the moving averages to be somewhere between the real and generated statistics, as
 exemplified below using the means:
 
-![Some non-matching distributions](post_data/2022-06-29-batchnorm-gans/figure_feature_distribution_means.svg)
+![Some non-matching distributions](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_feature_distribution_means.svg)
 
 When training `G` with `training=False` in `D`, these accumulated statistics are
 used to normalize the generated batch input in `D`. But since these statistics do _not_ match
@@ -373,7 +373,7 @@ is resolved! As we can see below, the model produces good samples, and it is
 even "immune" to affine-linear shifts in the data (like the original model without BN)
 due to the joint batch normalization.
 
-![It works!](post_data/2022-06-29-batchnorm-gans/figure_trained_bn_joint_fixed.svg)
+![It works!](/blog/assets/post_data/2022-06-29-batchnorm-gans/figure_trained_bn_joint_fixed.svg)
 
 
 ### It's Not Over Yet...
