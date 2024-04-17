@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+        <script src="/step_ai/pages/code.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1> Step Counter</h1>
+        <div style="float:left;">
+            Programm: <div id="steps_program">0</div>
+        </div>
+        <div style="float:right;">
+            Ki: <div id="steps_ki">0</div>
+        </div>
+
+        <script>
+
+            STORAGE_ALGORITHM = "Ki_data_algorithm"
+            STORAGE_MODEL = "ki_data_stored"
+            // load pyiodide program
+            pyodide = 0;
+            async function setup_pyodide(){
+                pyodide =await loadPyodide();
+
+                // load algorithm
+                const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_ALGORITHM));
+                pyodide.runPython(algorithm)
+
+
+                // load AI model 
+                const ai_model = JSON.parse(window.localStorage.getItem(STORAGE_MODEL));
+                pyodide.runPython(ai_model["code"]);
+                pyodide.globals.set("W", ai_model["W"])
+                pyodide.globals.set("b", ai_model["b"])
+
+                // the corresponding counters
+                window.addEventListener("devicemotion", handleMotion);
+                window.addEventListener("deviceorientation", handleOrientation);
+            }
+            setup_pyodide();
+
+            // prepare data collection
+
+            total_steps_program = 0
+
+            function predict_steps(){
+                const func = pyodide.globals.get("steps_made");
+                const steps = func(systems[0]["values"], systems[1]["values"], systems[2]["values"],systems[3]["values"],systems[4]["values"],systems[5]["values"],systems[6]["values"],systems[7]["values"],systems[8]["values"])
+                total_steps_program += steps
+                document.getElementById("steps_program").textContent = total_steps_program; 
+            }
+
+            total_steps_ki = 0;
+
+            feature_order = ["acc_x", "acc_y", "acc_z", "gyr_x", "gyr_y", "gyr_z", "o_a", "o_b", "o_d"]
+            function predict_ai(){
+                const func = pyodide.globals.get("predict");
+                // TODO prepare_data
+
+                let tmp = []
+                feature_order.forEach((w =>{
+                    const key_object = systems.find((e)=>e["name"]===w);
+                    tmp.push(...key_object["values"])
+                }
+                ))
+                const steps = func(tmp)
+                total_steps_ki += steps
+                document.getElementById("steps_ki").textContent = Math.round(total_steps_ki); 
+            }
+
+            // Request permission for iOS 13+ devices
+            if (
+                DeviceMotionEvent &&
+                typeof DeviceMotionEvent.requestPermission === "function"
+            ) {
+                DeviceMotionEvent.requestPermission();
+            }
+
+            function predict_both(){
+                predict_steps();
+                predict_ai();
+            }
+
+            handleMotion = createHandle(true, predict_both);
+
+        </script>
+    </body>
+</html>

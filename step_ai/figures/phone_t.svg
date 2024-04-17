@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="142.3mm" height="128.15mm" version="1.1" viewBox="0 0 142.3 128.15" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <marker id="Triangle" overflow="visible" markerHeight="1" markerWidth="1" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.5)" d="m5.77 0-8.65 5v-10z" fill="context-stroke" fill-rule="evenodd" stroke="context-stroke" stroke-width="1pt"/>
+  </marker>
+  <marker id="ArrowWide" overflow="visible" markerHeight="1" markerWidth="1" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="rotate(180 .125 0)" d="m3-3-3 3 3 3" fill="none" stroke="context-stroke"/>
+  </marker>
+  <marker id="ArrowWide-9" overflow="visible" markerHeight="1" markerWidth="1" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="rotate(180 .125 0)" d="m3-3-3 3 3 3" fill="none" stroke="context-stroke"/>
+  </marker>
+  <marker id="ArrowWide-9-9" overflow="visible" markerHeight="1" markerWidth="1" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="rotate(180 .125 0)" d="m3-3-3 3 3 3" fill="none" stroke="context-stroke"/>
+  </marker>
+ </defs>
+ <g transform="translate(-44.458 -125.27)">
+  <path transform="matrix(.16942 .020223 -.14085 .22925 75.811 149.31)" d="m91.436 317.33c-97.663-90.826-103.38-248.36-12.55-346.02 90.826-97.663 248.36-103.38 346.02-12.55 97.663 90.826 103.38 248.36 12.55 346.02-52.92 56.903-131.65 85.68-208.8 76.314" fill="none" marker-end="url(#Triangle)" stroke="#3f971b" stroke-width="15.579"/>
+  <g fill-rule="evenodd">
+   <g fill="#6f6f63" stroke-width="1.8898">
+    <path d="m109.04 165.13-65.447 55.436v8.6352l65.447-55.436z" points="43.593626,220.56687 43.593626,229.20208 109.04107,173.76609 109.04107,165.13087 "/>
+    <path d="m109.04 165.13v8.6352h67.31v-8.6352z" points="109.04107,173.76609 176.35122,173.76609 176.35122,165.13087 109.04107,165.13087 "/>
+    <path d="m109.04 173.77-65.447 55.436h67.31l65.447-55.436z" points="43.593626,229.20208 110.90378,229.20208 176.35122,173.76609 109.04107,173.76609 "/>
+    <path d="m109.04 165.13-65.447 55.436h67.31l65.447-55.436z" points="43.593626,220.56687 110.90378,220.56687 176.35122,165.13087 109.04107,165.13087 "/>
+    <path d="m43.594 220.57v8.6352h67.31v-8.6352z" points="43.593626,229.20208 110.90378,229.20208 110.90378,220.56687 43.593626,220.56687 "/>
+    <path d="m176.35 165.13-65.447 55.436v8.6352l65.447-55.436z" points="110.90378,220.56687 110.90378,229.20208 176.35122,173.76609 176.35122,165.13087 "/>
+   </g>
+   <g stroke-width="1.8898">
+    <path d="m109.86 167.7-57.556 48.752v-0.3513l57.556-48.752z" points="52.3064,216.45467 52.3064,216.10337 109.86288,167.35126 109.86288,167.70257 "/>
+    <path d="m109.86 167.7v-0.35131h59.624v0.35131z" points="109.86288,167.35126 169.48682,167.35126 169.48682,167.70257 109.86288,167.70257 "/>
+    <path d="m109.86 167.7-57.556 48.752h59.624l57.556-48.752z" points="52.3064,216.45467 111.93035,216.45467 169.48682,167.70257 109.86288,167.70257 "/>
+    <path d="m109.86 167.35-57.556 48.752h59.624l57.556-48.752z" points="52.3064,216.10337 111.93035,216.10337 169.48682,167.35126 109.86288,167.35126 "/>
+    <path d="m52.306 216.45v-0.3513h59.624v0.3513z" points="52.3064,216.10337 111.93035,216.10337 111.93035,216.45467 52.3064,216.45467 "/>
+    <path d="m169.49 167.7-57.556 48.752v-0.3513l57.556-48.752z" points="111.93035,216.45467 111.93035,216.10337 169.48682,167.35126 169.48682,167.70257 "/>
+   </g>
+   <g fill="#a2a2a2">
+    <path d="m88.909 204.71-11.08 9.3847v-0.0676l11.08-9.3847z" points="77.829556,214.09292 77.829556,214.0253 88.909074,204.6406 88.909074,204.70823 "/>
+    <path d="m88.909 204.71v-0.0676h11.478v0.0676z" points="88.909074,204.6406 100.38658,204.6406 100.38658,204.70823 88.909074,204.70823 "/>
+    <path d="m88.909 204.71-11.08 9.3847h11.478l11.08-9.3847z" points="77.829556,214.09292 89.307058,214.09292 100.38658,204.70823 88.909074,204.70823 "/>
+    <path d="m88.909 204.64-11.08 9.3847h11.478l11.08-9.3847z" points="77.829556,214.0253 89.307058,214.0253 100.38658,204.6406 88.909074,204.6406 "/>
+    <path d="m77.83 214.09v-0.0676h11.478v0.0676z" points="77.829556,214.0253 89.307058,214.0253 89.307058,214.09292 77.829556,214.09292 "/>
+    <path d="m100.39 204.71-11.08 9.3847v-0.0676l11.08-9.3847z" points="89.307058,214.09292 89.307058,214.0253 100.38658,204.6406 100.38658,204.70823 "/>
+   </g>
+  </g>
+  <path d="m121.6 189.55 61.767-0.37654" fill="none" marker-end="url(#ArrowWide-9)" stroke="#ba0a0a" stroke-miterlimit="3.8" stroke-width="2.2368"/>
+  <path d="m122.08 189.61 48.841-37.813" fill="none" marker-end="url(#ArrowWide-9-9)" stroke="#ba0a0a" stroke-miterlimit="3.8" stroke-width="2.2368"/>
+  <g font-family="sans-serif" font-size="1.4111px">
+   <g stroke-width=".265">
+    <text x="168.46844" y="198.04601" style="line-height:1.25" xml:space="preserve"><tspan x="168.46844" y="198.04601" font-family="Sans" font-size="12.7px" stroke-width=".265" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">x</tspan></text>
+    <text x="149.25783" y="159.73732" style="line-height:1.25" xml:space="preserve"><tspan x="149.25783" y="159.73732" font-family="Sans" font-size="12.7px" stroke-width=".265" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">y</tspan></text>
+    <text x="123.33689" y="144.5847" style="line-height:1.25" xml:space="preserve"><tspan x="123.33689" y="144.5847" font-family="Sans" font-size="12.7px" stroke-width=".265" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">z</tspan></text>
+   </g>
+   <text x="157.31779" y="150.34702" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="157.31779" y="150.34702" stroke-width=".26458"/></text>
+  </g>
+ </g>
+ <g transform="translate(10.41 .00020786)">
+  <path transform="translate(-54.869 -125.27)" d="m121.77 189.18v-61.768" fill="none" marker-end="url(#ArrowWide)" stroke="#ba0a0a" stroke-miterlimit="3.8" stroke-width="2.237"/>
+ </g>
+</svg>

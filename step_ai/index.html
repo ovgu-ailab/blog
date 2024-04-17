@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+        <link rel="manifest" href="manifest.json"/>
+        <link rel="icon" href="icon.svg" />
+        <link rel="stylesheet" href="pages/style.css"/>
+    </head>
+    <body>
+        <h1> KI Schrittzähler</h1>
+        <div id="related_links">
+        <ul>
+        <li><a href="/step_ai/pages/programming.html">Erste Schritte im Programmieren</a></li>
+        <li><a href="/step_ai/pages/step_count.html">Programmieren des Schrittzählers</a></li>
+        <li> <a href="/step_ai/pages/data_collection.html">Sammle die Daten für die KI</a></li>
+        <li> <a href="/step_ai/pages/train_ai.html">Trainiere deine KI</a></li>
+        <li> <a href="/step_ai/pages/application.html">Anwendung</a></li>
+        <li> <a href="https://ai-engineer.de/wp/">AI Engineering Studieren ?</a></li>
+        <li> <a href="/step_ai/presentation.html">Folien</a></li>
+        </ul>
+        </div>
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("sw.js");
+            }
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+        <script src="/step_ai/pages/code.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>Programmieren</h1>
+        <div id="coding">
+        <textarea id="python_code" oninput="update_code(this.value);sync_scroll(this);" spellcheck="false"></textarea>
+        <pre id="highlighting" aria-hidden="true">
+        <code class="language-python" id="highlighting_content">
+        </code></pre></div>
+        <input type="button" value="Submit Code" id="code_submit" class="button"></input>
+        <div style="font-size:2em;">
+            <div id="l0">1: Ungelöst</div>
+            <div id="l1">2: Ungelöst</div>
+            <div id="l2">3: Ungelöst</div>
+            <div id="l3">4: Ungelöst</div>
+        </div>
+
+        <div id="print" style="background:black">
+        </div>
+        <div id="error" style="background:black">
+        </div>
+
+        <script>
+            document.getElementById("python_code").textContent=`\ndef problem1(x):\n  # Bestimme das Maximum von x\n  pass\n\n\ndef problem2(x,c):\n  # Addiere alle Zahlen in x, die echt größer als c sind\n  pass\n\ndef problem3(x,y):\n  #Gebe die Summe aus den paarweisen Produkten der Listen x und y zurück\n  pass\n\n\ndef problem4(x):\n  #Gebe die Anzahl and Segmenete (>=2) mit aufsteigenden Zahlen zurück\n  pass\n\n\n`
+        update_code(document.getElementById("python_code").value);
+        pyodide = 0;
+        
+        STORAGE_ALGORITHM = "intro"
+        const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_ALGORITHM));
+        if (algorithm)
+            {
+                document.getElementById("python_code").textContent= algorithm;
+                update_code(document.getElementById("python_code").value);
+            }
+
+        async function setup_pyodide(){
+            pyodide =await loadPyodide();
+            pyodide.runPython(`
+                import sys
+                import io
+                sys.stdout = io.StringIO()
+                `)
+            const code = document.getElementById("python_code").textContent;
+            pyodide.runPython(code)
+        }
+        setup_pyodide();
+
+        tests =[
+                `
+                x = [1, 2, 3, 4, 5, 6]
+                assert problem1(x) == 6, f"solution for {x} is {problem1(x)} but should be 6"
+                x[0] = 7
+                assert problem1(x) == 7, f"solution for {x} is {problem1(x)} but should be 7"
+                x = [-2,-1, -4, -8.5]
+                assert problem1(x) == -1, f"solution for {x} is {problem1(x)} but should be -1"
+                `,
+                `
+                x = [1, 2, 3, 4, 5, 6]
+                assert problem2(x, 5) == 6, f"solution for {x} and 5 is {problem2(x,5)} but should be 6"
+                assert problem2(x, 3) == 15, f"solution for {x} and 3 is {problem2(x,5)} but should be 15"
+                `,
+                `
+                x = [1, 2]
+                y = [2, 4]
+                assert problem3(x, y) == 10, f"solution for {x} and {y} is {problem3(x,y)} but should be 10"
+                x = [0, 2]
+                y = [2, 0]
+                assert problem3(x, y) == 0, f"solution for {x} and {y} is {problem3(x,y)} but should be 0"
+                `,
+                `
+                x = [1, 2, 3, 1, 5, 6]
+                assert problem4(x) == 2, f"solution for {x}  is {problem4(x)} but should be 2"
+                x = [1, 2, 1, 0, -1, 3, 5, 6, -1, -100, 3]
+                assert problem4(x) == 3, f"solution for {x}  is {problem4(x)} but should be 3"
+                `,
+            ]
+
+        function run_code(e){
+                document.getElementById("error").textContent = ""
+                document.getElementById("print").textContent = ""
+            try{
+                pyodide.runPython(document.getElementById("python_code").value)
+                window.localStorage.setItem(STORAGE_ALGORITHM, JSON.stringify(document.getElementById("python_code").value));
+            }
+            catch(error){
+                document.getElementById("error").textContent = error
+            }
+
+            var stdout = pyodide.runPython("sys.stdout.getvalue()").replaceAll("\n","<br>")
+            document.getElementById("print").innerHTML += stdout
+            var stdout = pyodide.runPython("sys.stdout = io.StringIO()")
+            
+            for(let i=0; i<4; i++){
+                solved = true;
+                try{
+                    pyodide.runPython(tests[i])
+                }
+                catch(error){
+                    solved = false
+                    document.getElementById("error").textContent = error
+                }
+                var stdout = pyodide.runPython("sys.stdout.getvalue()").replaceAll("\n","<br>")
+                console.log(stdout)
+                document.getElementById("print").innerHTML += stdout
+                var stdout = pyodide.runPython("sys.stdout = io.StringIO()")
+                if(solved){
+                    document.getElementById("l"+i).textContent = (i+1)+ " : Gelöst"
+                }
+            }
+
+        }
+        document.getElementById("code_submit").addEventListener("click", run_code);
+        </script>
+    </body>
+</html>

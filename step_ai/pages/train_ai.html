@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+        <script src="/step_ai/pages/code.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1> Implementation der eigenen KI</h1>
+        <div id="coding">
+        <textarea id="python_code" oninput="update_code(this.value);" spellcheck="false"></textarea>
+        <pre id="highlighting" aria-hidden="true">
+        <code class="language-python" id="highlighting_content">
+        </code></pre>
+        </div>
+
+        <input type="button" class="button" value="Train Model" id="train_model"></input><br>
+        <script>
+            document.getElementById("python_code").addEventListener("scroll", (e)=>{sync_scroll()});
+            document.getElementById("python_code").addEventListener("input",(e)=>{sync_scroll()});
+            document.getElementById("python_code").textContent=`\nW = []\nb = []\n\ndef predict(x):\n    return 1\n\ndef train_step(x, y):\n    global W\n    global b\n    # forward pass\n    # backward pass\n    # gradient step`
+            update_code(document.getElementById("python_code").value);
+            STORAGE_KEY = "test_key1";
+            STORAGE_MODEL = "ki_data_stored"
+
+            const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_MODEL))["code"];
+            if (algorithm)
+                {
+                    document.getElementById("python_code").textContent= algorithm;
+                    update_code(document.getElementById("python_code").value);
+                }
+
+            // 3. Get and parse data
+            function getAllStoredRuns() {
+                const data = window.localStorage.getItem(STORAGE_KEY);
+                const runs = data ? JSON.parse(data) : [];
+                return runs;
+            }
+
+            console.log(getAllStoredRuns().length);
+
+            pyodide = 0;
+            async function setup_pyodide(){
+                pyodide =await loadPyodide();
+                pyodide.runPython(document.getElementById("python_code").value)
+            }
+
+            setup_pyodide();
+
+            feature_order = ["acc_x", "acc_y", "acc_z", "gyr_x", "gyr_y", "gyr_z", "o_a", "o_b", "o_d"]
+
+            function prepare_data(row){
+                console.log(row)
+                window_size=20
+                y = row["steps"]
+                num_windows = row["gyr_x"].length/window_size;
+                max_size = num_windows * window_size;
+                console.log(window_size, num_windows, max_size)
+                windows = []
+
+                for(let  i = 0; i < Math.floor(num_windows); ++i){
+                    let tmp = []
+                    feature_order.forEach((w =>{
+                        let splice = row[w].slice(i*window_size,(i+1) * window_size)
+                        tmp.push(...splice)
+                    }
+                    ))
+                    console.log(tmp)
+                    windows.push(tmp)
+
+                }
+                return [windows, y]
+            }
+
+            function permutation(arr) {
+                // make a copy of the original array
+                let copy = [...arr];
+
+                for (let i = copy.length - 1; i > 0; --i) {
+                    // pick a random index from 0 to i
+                    const j = Math.floor(Math.random() * (i + 1));
+
+                    // swap elements at indices i and j
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+
+                return copy;
+            }
+
+
+            function save_ai(){
+                const model = {
+                    "W":pyodide.globals.get("W").toJs(),
+                    "b":pyodide.globals.get("b").toJs(),
+                    "code":document.getElementById("python_code").value
+                }
+                window.localStorage.setItem(STORAGE_MODEL, JSON.stringify(model));
+            }
+
+            function train_model(){
+                const runs =  getAllStoredRuns();
+
+                const samples = runs.map((e)=> prepare_data(e));
+                const indices = [...Array(samples.length).keys()];
+                const train_step = pyodide.globals.get("train_step")
+
+                for(let i = 0; i < 1; ++i){
+                    const permuted_indices = permutation(indices)
+                    for(let j =0; j < samples.length; ++j){
+                        const x = samples[permuted_indices[j]][0]
+                        const y = samples[permuted_indices[j]][1]
+                        train_step(x,y);
+                    }
+                }
+
+                save_ai();
+                
+            }
+            const train_button = document.getElementById("train_model");
+            train_button.addEventListener("click", train_model);
+
+        </script>
+    </body>
+</html>

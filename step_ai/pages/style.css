@@ -1,0 +1,110 @@
+
+body{
+    color:#fff;
+
+        background: #0068b4;
+}
+    h1{
+        font-size: 5em;
+    }
+    ul {
+        list-style: none;
+        padding: 20px;
+        width: 100%;
+    }
+    ul li{
+        padding:0;
+        margin:0;
+        border-bottom     : 1px solid #90bade;
+        background-color  : #2175bc;
+    }
+
+    ul a{
+        display: block;
+        font-weight       : bold;
+        font-size         : 3em; 
+        padding           : .5em;
+        text-decoration   : none;
+        color             : #fff;
+    }
+
+    li a:hover {
+        background-color  : #2586d7;
+        color             : #fff;
+        border-left       : 10px solid #1c64d1;
+        border-right      : 10px solid #5ba3e0;
+        }
+
+    
+
+   html>body li a {
+        width: auto;
+        }
+
+
+    .button{
+        font-size: 2em;
+        color:black;
+        width: 10em;
+    }
+
+    #charts{
+        width:100%;
+        height:50%;
+    }
+    canvas{
+      margin-left: auto;
+      margin-right: auto;
+      width: 32%;
+    }
+
+    .container{
+    }
+
+    .number{
+        font-size: 2em;
+    }
+
+    #steps{
+        font-size: 3em;
+    }
+
+    div{
+        text-align:center;
+        margin:0.5em;
+        font-size:2em;
+    }
+
+#coding{
+    display:grid;
+    width:100%;
+    height:20em;
+  overflow-y:scroll;
+}
+#python_code, #highlighting{
+    grid-area: 1/1/4/2;
+    margin: 10px;
+    padding: 10px;
+    border:0;
+    white-space:pre;
+}
+
+#python_code, #highlighting, #highlighting_content{
+  font-size: 15pt;
+  font-family: monospace;
+  line-height: 20pt;
+  text-align: left;
+}
+
+#python_code{
+    z-index:1;
+  color:transparent;
+  background:transparent;
+  caret-color: black;
+
+}
+#highlighting{
+    z-index:0;
+    background:white;
+    color:black;
+}

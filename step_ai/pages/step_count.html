@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <header>
+    <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+        <script src="/step_ai/pages/code.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </header>
+<body>
+    <h1> Programmiere deinen Schrittzähler </h1>
+    <div id="charts">
+        <div id ="gyr" class="container">
+            <canvas id="gyr_x" width="100" height="40"></canvas>
+            <canvas id="gyr_y" width="100" height="40"></canvas>
+            <canvas id="gyr_z" width="100" height="40"></canvas>
+        </div>
+        <div id="accs" class="container">
+            <canvas id="acc_x" width="100" height="40"></canvas>
+            <canvas id="acc_y" width="100" height="40"></canvas>
+            <canvas id="acc_z" width="100" height="40"></canvas>
+        </div>
+        <div id="orientation" class="container">
+            <canvas id="o_a" width="100" height="40"></canvas>
+            <canvas id="o_b" width="100" height="40"></canvas>
+            <canvas id="o_d" width="100" height="40"></canvas>
+        </div>
+
+        <input type="button" value="Start Recording" class="button" id="record_button"></input>
+        <div id="steps"> Steps: 0 </div>
+        <div id="coding">
+        <textarea id="python_code" oninput="update_code(this.value);sync_scroll(this);" spellcheck="false"></textarea>
+        <pre id="highlighting" aria-hidden="true">
+        <code class="language-python" id="highlighting_content">
+        </code></pre>
+        </div>
+
+        <input type="button" value="Submit Code" id="code_submit" class="button"></input>
+    </div>
+<script>
+
+        document.getElementById("python_code").textContent=`\ndef steps_made(acc_x, acc_y, acc_z, gyr_a, gyr_b, gyr_g, o_a, o_b, o_g):\n    return 1`
+        update_code(document.getElementById("python_code").value);
+
+    STORAGE_ALGORITHM = "Ki_data_algorithm"
+    data_set = []
+    total_steps = 0
+
+        const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_ALGORITHM));
+        if (algorithm)
+            {
+                document.getElementById("python_code").textContent= algorithm;
+                update_code(document.getElementById("python_code").value);
+            }
+
+pyodide = 0;
+async function setup_pyodide(){
+    pyodide =await loadPyodide();
+    const code = document.getElementById("python_code").textContent;
+    pyodide.runPython(code)
+}
+setup_pyodide();
+
+        const code = document.getElementById("python_code").textContent;
+    // Request permission for iOS 13+ devices
+    if (
+        DeviceMotionEvent &&
+        typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+        DeviceMotionEvent.requestPermission();
+    }
+
+    function update_prediction_code(e){
+        pyodide.runPython(document.getElementById("python_code").value)
+        total_steps = 0
+        document.getElementById("steps").textContent = total_steps; 
+        window.localStorage.setItem(STORAGE_ALGORITHM, JSON.stringify(document.getElementById("python_code").value));
+    }
+
+    document.getElementById("code_submit").addEventListener("click", update_prediction_code);
+
+
+    function predict_steps(){
+        const func = pyodide.globals.get("steps_made");
+        const steps = func(systems[0]["values"], systems[1]["values"], systems[2]["values"],systems[3]["values"],systems[4]["values"],systems[5]["values"],systems[6]["values"],systems[7]["values"],systems[8]["values"])
+        total_steps += steps
+        document.getElementById("steps").textContent = "Steps: "+total_steps; 
+    }
+
+    draw_coordinate_systems()
+
+    const handleMotion = createHandle(true, predict_steps)
+
+
+    let record_button = document.getElementById("record_button");
+
+    is_recording = false;
+
+
+    function recording(e){
+        console.log(is_recording)
+        if (!is_recording){
+            console.log("start")
+            window.addEventListener("devicemotion", handleMotion);
+            window.addEventListener("deviceorientation", handleOrientation);
+            is_recording=true;
+            record_button.value = "Stop  Recording";
+        }
+        else{ 
+            record_button.value = "Start  Recording";
+            is_recording = false;
+            window.removeEventListener("devicemotion", handleMotion);
+            window.removeEventListener("deviceorientation", handleOrientation);
+        }
+
+    }
+    record_button.addEventListener("click", recording);
+
+
+</script>
+
+</body>
+</html>
+

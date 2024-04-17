@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <header>
+    <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+        <script src="/step_ai/pages/code.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </header>
+<body>
+    <h1> Daten Sammeln</h1>
+    <div id="charts">
+        <div id ="gyr" class="container">
+            <canvas id="gyr_x" width="300" height="200"></canvas>
+            <canvas id="gyr_y" width="300" height="200"></canvas>
+            <canvas id="gyr_z" width="300" height="200"></canvas>
+        </div>
+        <div id="accs" class="container">
+            <canvas id="acc_x" width="300" height="200"></canvas>
+            <canvas id="acc_y" width="300" height="200"></canvas>
+            <canvas id="acc_z" width="300" height="200"></canvas>
+        </div>
+        <div id="orientation" class="container">
+            <canvas id="o_a" width="300" height="200"></canvas>
+            <canvas id="o_b" width="300" height="200"></canvas>
+            <canvas id="o_d" width="300" height="200"></canvas>
+        </div>
+
+        <input type="button" class="button" value="Start Recording" id="record_button"></input><br>
+        Insert number of steps:
+        <input type="number" class="number" name="Steps" id="step_input" min="0" max="20" step="1" /><br>
+        <input type="button" class="button" value="SaveRun" id="save_run"></input><br>
+
+        <div id="runs">        
+        </div>
+        <input type="button" class="button" value="Export Runs" id="export_runs"></input><br>
+
+    </div>
+
+<script>
+    
+    STORAGE_KEY = "test_key1"
+
+    function storeNewRun(run) {
+        const runs = getAllStoredRuns();
+        runs.push(run);
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(runs));
+    }
+
+    // 3. Get and parse data
+    function getAllStoredRuns() {
+        const data = window.localStorage.getItem(STORAGE_KEY);
+        const runs = data ? JSON.parse(data) : [];
+        return runs;
+    }
+
+    // Request permission for iOS 13+ devices
+    if (
+        DeviceMotionEvent &&
+        typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+        DeviceMotionEvent.requestPermission();
+    }
+
+    draw_coordinate_systems();
+   
+    function handleMotion(e){
+        
+        systems[0]["values"].push(event.rotationRate.alpha)
+        systems[1]["values"].push(event.rotationRate.beta)
+        systems[2]["values"].push(event.rotationRate.gamma)
+        systems[3]["values"].push(event.acceleration.x)
+        systems[4]["values"].push(event.acceleration.y)
+        systems[5]["values"].push(event.acceleration.z)
+        systems[6]["values"].push(o_a)
+        systems[7]["values"].push(o_b)
+        systems[8]["values"].push(o_d)
+
+        for(let i=0; i<=8; ++i){
+            let vs = systems[i]["values"]
+            let last = vs[vs.length - 1];
+            if(last > systems[i]["max_val"]){
+                systems[i]["max_val"] = last;
+            }
+            if(last < systems[i]["min_val"]){
+                systems[i]["min_val"] = last;
+            }
+
+        }
+        draw_coordinate_systems();
+    }
+
+
+
+    let record_button = document.getElementById("record_button");
+
+    is_recording = false;
+
+    // show 
+    function save_data(e){
+        data_point = {"steps": document.getElementById("step_input").value}
+        systems.forEach((elem) =>{
+            data_point[elem["name"]] = JSON.parse(JSON.stringify(elem["values"]))
+        })
+        storeNewRun(data_point);
+
+        let save_run_button = document.getElementById("save_run")
+        save_run_button.removeEventListener("click",  save_data);
+
+        let runs_div = document.getElementById("runs")
+        const div = document.createElement("div")
+        div.textContent = "run " + getAllStoredRuns().length;
+        runs_div.append(div)
+
+    }
+
+    getAllStoredRuns().forEach((e,i)=>{
+        const runs_div = document.getElementById("runs")
+        const div = document.createElement("div")
+        div.textContent = "run " + (i+1)
+        runs_div.append(div)
+    })
+
+    function recording(e){
+        console.log(is_recording)
+        if (!is_recording){
+            systems.forEach((elem) => {
+                elem["values"].length = 0;
+            })
+
+            window.addEventListener("devicemotion", handleMotion);
+            window.addEventListener("deviceorientation", handleOrientation);
+            is_recording=true;
+            record_button.value = "Stop  Recording";
+        }
+        else{
+
+            let save_run_button = document.getElementById("save_run")
+            save_run_button.addEventListener("click",  save_data);
+    
+            record_button.value = "Start  Recording";
+            is_recording = false;
+            window.removeEventListener("devicemotion", handleMotion);
+            window.removeEventListener("deviceorientation", handleOrientation);
+        }
+
+    }
+    record_button.addEventListener("click", recording);
+
+
+    function download_data(e){
+        const a = document.createElement("a")
+        const url = window.URL.createObjectURL(new Blob(getAllStoredRuns().map((e)=> JSON.stringify(e))));
+        a.href = url;
+        a.download = "test.txt";
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+
+    const export_data_button = document.getElementById("export_runs");
+    export_data_button.addEventListener("click", download_data);
+
+</script>
+
+</body>
+</html>
+
