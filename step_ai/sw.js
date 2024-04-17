@@ -25,7 +25,18 @@ const APP_STATIC_RESOURCES = [
     "/blog/step_ai/figures/phone_beta.svg",
     "/blog/step_ai/figures/phone_gamma.svg",
     "/blog/step_ai/figures/phone_t.svg",
-    "/blog/step_ai/figures/phone_xyz.svg"
+    "/blog/step_ai/figures/phone_xyz.svg",
+    "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js",
+    "https://unpkg.com/reveal.js@^4//dist/reset.css",
+    "https://unpkg.com/reveal.js@^4//dist/reveal.css",
+    "https://unpkg.com/reveal.js@^4//dist/theme/serif.css",
+    "https://unpkg.com/reveal.js@^4//dist/reveal.js",
+  "https://unpkg.com/reveal.js@^4//plugin/notes/notes.js",
+  "https://unpkg.com/reveal.js@^4//plugin/search/search.js",
+  "https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js",
+  "https://unpkg.com/reveal.js@^4//plugin/math/math.js",
 ]
 
 if ('serviceWorker' in navigator) {
