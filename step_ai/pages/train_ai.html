@@ -17,18 +17,22 @@
         </div>
 
         <input type="button" class="button" value="Train Model" id="train_model"></input><br>
+        <div id="print" style="background:black;text-wrap:wrap;">
+        </div>
+        <div id="error" style="background:black;color:yellow;">
+        </div>
         <script>
             document.getElementById("python_code").addEventListener("scroll", (e)=>{sync_scroll()});
             document.getElementById("python_code").addEventListener("input",(e)=>{sync_scroll()});
-            document.getElementById("python_code").textContent=`\nW = []\nb = []\n\ndef predict(x):\n    return 1\n\ndef train_step(x, y):\n    global W\n    global b\n    # forward pass\n    # backward pass\n    # gradient step`
+            document.getElementById("python_code").textContent=`\nW = []\nb = []\n\ndef predict(x):\n    return 1\n\ndef train_step(x, y, epoch, run):\n    global W\n    global b\n    # forward pass\n    # backward pass\n    # gradient step`
             update_code(document.getElementById("python_code").value);
             STORAGE_KEY = "test_key1";
             STORAGE_MODEL = "ki_data_stored"
 
-            const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_MODEL))["code"];
+            const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_MODEL));
             if (algorithm)
                 {
-                    document.getElementById("python_code").textContent= algorithm;
+                    document.getElementById("python_code").textContent= algorithm["code"];
                     update_code(document.getElementById("python_code").value);
                 }
 
@@ -44,6 +48,11 @@
             pyodide = 0;
             async function setup_pyodide(){
                 pyodide =await loadPyodide();
+                pyodide.runPython(`
+                    import sys
+                    import io
+                    sys.stdout = io.StringIO()
+                    `)
                 pyodide.runPython(document.getElementById("python_code").value)
             }
 
@@ -100,22 +109,33 @@
             }
 
             function train_model(){
+                document.getElementById("print").textContent = ""
+                document.getElementById("error").textContent = ""
                 const runs =  getAllStoredRuns();
 
                 const samples = runs.map((e)=> prepare_data(e));
                 const indices = [...Array(samples.length).keys()];
                 const train_step = pyodide.globals.get("train_step")
 
-                for(let i = 0; i < 1; ++i){
-                    const permuted_indices = permutation(indices)
-                    for(let j =0; j < samples.length; ++j){
-                        const x = samples[permuted_indices[j]][0]
-                        const y = samples[permuted_indices[j]][1]
-                        train_step(x,y);
+                try{
+                    for(let i = 0; i < 10; ++i){
+                        const permuted_indices = permutation(indices)
+                        for(let j =0; j < samples.length; ++j){
+                            const x = samples[permuted_indices[j]][0]
+                            const y = samples[permuted_indices[j]][1]
+                            train_step(x,y,i, j);
+                            var stdout = pyodide.runPython("sys.stdout.getvalue()").replaceAll("\n","<br>")
+                            document.getElementById("print").innerHTML += stdout
+                            var stdout = pyodide.runPython("sys.stdout = io.StringIO()")
+                        }
                     }
+                    save_ai();
+                    alert("Model trainiert");
+                }
+                catch(error){
+                    document.getElementById("error").textContent = error
                 }
 
-                save_ai();
                 
             }
             const train_button = document.getElementById("train_model");

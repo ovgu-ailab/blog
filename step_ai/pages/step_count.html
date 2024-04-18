@@ -38,6 +38,11 @@
 
         <input type="button" value="Submit Code" id="code_submit" class="button"></input>
     </div>
+
+        <div id="print" style="background:black;text-wrap:wrap;">
+        </div>
+        <div id="error" style="background:black;color:yellow;">
+        </div>
 <script>
 
         document.getElementById("python_code").textContent=`\ndef steps_made(acc_x, acc_y, acc_z, gyr_a, gyr_b, gyr_g, o_a, o_b, o_g):\n    return 1`
@@ -59,6 +64,11 @@ async function setup_pyodide(){
     pyodide =await loadPyodide();
     const code = document.getElementById("python_code").textContent;
     pyodide.runPython(code)
+    pyodide.runPython(`
+        import sys
+        import io
+        sys.stdout = io.StringIO()
+        `)
 }
 setup_pyodide();
 
@@ -76,19 +86,29 @@ setup_pyodide();
         total_steps = 0
         document.getElementById("steps").textContent = total_steps; 
         window.localStorage.setItem(STORAGE_ALGORITHM, JSON.stringify(document.getElementById("python_code").value));
+        document.getElementById("print").textContent = "";
+        document.getElementById("error").textContent = ""
     }
 
     document.getElementById("code_submit").addEventListener("click", update_prediction_code);
 
-
     function predict_steps(){
         const func = pyodide.globals.get("steps_made");
+        try{
         const steps = func(systems[0]["values"], systems[1]["values"], systems[2]["values"],systems[3]["values"],systems[4]["values"],systems[5]["values"],systems[6]["values"],systems[7]["values"],systems[8]["values"])
+        }
+            catch(error){
+                document.getElementById("error").textContent = error
+            }
         total_steps += steps
         document.getElementById("steps").textContent = "Steps: "+total_steps; 
+        var stdout = pyodide.runPython("sys.stdout.getvalue()").replaceAll("\n","<br>")
+        document.getElementById("print").innerHTML += stdout
+        var stdout = pyodide.runPython("sys.stdout = io.StringIO()")
     }
 
     draw_coordinate_systems()
+        
 
     const handleMotion = createHandle(true, predict_steps)
 
