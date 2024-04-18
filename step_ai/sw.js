@@ -33,10 +33,10 @@ const APP_STATIC_RESOURCES = [
     "https://unpkg.com/reveal.js@^4//dist/reveal.css",
     "https://unpkg.com/reveal.js@^4//dist/theme/serif.css",
     "https://unpkg.com/reveal.js@^4//dist/reveal.js",
-  "https://unpkg.com/reveal.js@^4//plugin/notes/notes.js",
-  "https://unpkg.com/reveal.js@^4//plugin/search/search.js",
-  "https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js",
-  "https://unpkg.com/reveal.js@^4//plugin/math/math.js",
+      "https://unpkg.com/reveal.js@^4//plugin/notes/notes.js",
+      "https://unpkg.com/reveal.js@^4//plugin/search/search.js",
+      "https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js",
+      "https://unpkg.com/reveal.js@^4//plugin/math/math.js",
 ]
 
 if ('serviceWorker' in navigator) {

@@ -2,12 +2,12 @@
     "name": "StepTrackerAIProject",
     "short_name": "StepAI",
     "description": "Small AI Project for show cases",
-    "start_url":"/index.html",
+    "start_url":"/blog/step_ai/index.html",
     "theme_color": "#eeffee",
     "background_color": "#eeffee",
     "icons": [
         {
-            "src":"./icon.svg",
+            "src":"/blog/step_ai/icon.svg",
             "sizes":"any"
         }
     ],
