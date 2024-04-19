@@ -84,7 +84,7 @@ setup_pyodide();
 
     document.getElementById("code_submit").addEventListener("click", update_prediction_code);
 
-    function predict_steps(){
+    function predict_steps(systems){
         const func = pyodide.globals.get("steps_made");
         let steps;
         try{

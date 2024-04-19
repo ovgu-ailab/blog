@@ -62,7 +62,6 @@
 
             function prepare_data(row){
                 console.log(row)
-                window_size=20
                 y = row["steps"]
                 num_windows = row["gyr_x"].length/window_size;
                 max_size = num_windows * window_size;
@@ -76,10 +75,10 @@
                         tmp.push(...splice)
                     }
                     ))
-                    console.log(tmp)
                     windows.push(tmp)
 
                 }
+                console.log(windows.length, windows[0].length)
                 return [windows, y]
             }
 

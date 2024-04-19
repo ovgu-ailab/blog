@@ -61,7 +61,7 @@
 
             total_steps_program = 0
 
-            function predict_steps(){
+            function predict_steps(systems){
                 const func = pyodide.globals.get("steps_made");
                 const steps = func(systems[0]["values"], systems[1]["values"], systems[2]["values"],systems[3]["values"],systems[4]["values"],systems[5]["values"],systems[6]["values"],systems[7]["values"],systems[8]["values"])
                 total_steps_program += steps
@@ -71,7 +71,7 @@
             total_steps_ki = 0;
 
             feature_order = ["acc_x", "acc_y", "acc_z", "gyr_x", "gyr_y", "gyr_z", "o_a", "o_b", "o_d"]
-            function predict_ai(){
+            function predict_ai(systems){
                 const func = pyodide.globals.get("predict");
                 // TODO prepare_data
 
@@ -81,15 +81,16 @@
                     tmp.push(...key_object["values"])
                 }
                 ))
+                console.log("data_length",tmp.length)
                 const steps = func(tmp)
                 total_steps_ki += steps
                 document.getElementById("steps_ki").textContent = Math.round(total_steps_ki); 
             }
 
 
-            function predict_both(){
-                predict_steps();
-                predict_ai();
+            function predict_both(systems){
+                predict_steps(systems);
+                predict_ai(systems);
             }
 
             function start_recording(){ 

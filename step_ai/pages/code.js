@@ -74,6 +74,7 @@ systems = [
 ]
 
 
+
 o_a = 0
 o_b = 0
 o_d = 0
@@ -120,7 +121,9 @@ function draw_coordinate_systems(){
 function createHandle(resetValues=false, call_on_window_size_reached=(e)=>undefined){
 
     function handleMotion(e){
+        new Promise((resolve) => {
         
+        let system_clone= 101;
         systems[0]["values"].push(event.rotationRate.alpha)
         systems[1]["values"].push(event.rotationRate.beta)
         systems[2]["values"].push(event.rotationRate.gamma)
@@ -134,8 +137,7 @@ function createHandle(resetValues=false, call_on_window_size_reached=(e)=>undefi
 
         let window_full = false;
         if(systems[0]["values"].length === window_size){
-            console.log("full", systems[0]["values"].length )
-            call_on_window_size_reached();
+            system_clone = structuredClone(systems)
             if(resetValues){
                 window_full = true
             }
@@ -158,6 +160,12 @@ function createHandle(resetValues=false, call_on_window_size_reached=(e)=>undefi
 
         }
         draw_coordinate_systems();
+            if (window_full){
+
+                resolve(system_clone);
+            }
+        }).then((value) => {
+            call_on_window_size_reached(value)})
 
     }
     return handleMotion
