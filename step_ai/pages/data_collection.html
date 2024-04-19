@@ -56,36 +56,10 @@
 
     draw_coordinate_systems();
    
-    function handleMotion(e){
-        
-        systems[0]["values"].push(event.rotationRate.alpha)
-        systems[1]["values"].push(event.rotationRate.beta)
-        systems[2]["values"].push(event.rotationRate.gamma)
-        systems[3]["values"].push(event.acceleration.x)
-        systems[4]["values"].push(event.acceleration.y)
-        systems[5]["values"].push(event.acceleration.z)
-        systems[6]["values"].push(o_a)
-        systems[7]["values"].push(o_b)
-        systems[8]["values"].push(o_d)
-
-        for(let i=0; i<=8; ++i){
-            let vs = systems[i]["values"]
-            let last = vs[vs.length - 1];
-            if(last > systems[i]["max_val"]){
-                systems[i]["max_val"] = last;
-            }
-            if(last < systems[i]["min_val"]){
-                systems[i]["min_val"] = last;
-            }
-
-        }
-        draw_coordinate_systems();
-    }
-
+    handleMotion =createHandle(false)
 
 
     let record_button = document.getElementById("record_button");
-
     is_recording = false;
 
     // show 

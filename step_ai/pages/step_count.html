@@ -12,19 +12,19 @@
     <h1> Programmiere deinen Schrittzähler </h1>
     <div id="charts">
         <div id ="gyr" class="container">
-            <canvas id="gyr_x" width="100" height="40"></canvas>
-            <canvas id="gyr_y" width="100" height="40"></canvas>
-            <canvas id="gyr_z" width="100" height="40"></canvas>
+            <canvas id="gyr_x" width="300" height="200"></canvas>
+            <canvas id="gyr_y" width="300" height="200"></canvas>
+            <canvas id="gyr_z" width="300" height="200"></canvas>
         </div>
         <div id="accs" class="container">
-            <canvas id="acc_x" width="100" height="40"></canvas>
-            <canvas id="acc_y" width="100" height="40"></canvas>
-            <canvas id="acc_z" width="100" height="40"></canvas>
+            <canvas id="acc_x" width="300" height="200"></canvas>
+            <canvas id="acc_y" width="300" height="200"></canvas>
+            <canvas id="acc_z" width="300" height="200"></canvas>
         </div>
         <div id="orientation" class="container">
-            <canvas id="o_a" width="100" height="40"></canvas>
-            <canvas id="o_b" width="100" height="40"></canvas>
-            <canvas id="o_d" width="100" height="40"></canvas>
+            <canvas id="o_a" width="300" height="200"></canvas>
+            <canvas id="o_b" width="300" height="200"></canvas>
+            <canvas id="o_d" width="300" height="200"></canvas>
         </div>
 
         <input type="button" value="Start Recording" class="button" id="record_button"></input>
@@ -89,16 +89,12 @@ setup_pyodide();
         let steps;
         try{
             steps = func(systems[0]["values"], systems[1]["values"], systems[2]["values"],systems[3]["values"],systems[4]["values"],systems[5]["values"],systems[6]["values"],systems[7]["values"],systems[8]["values"])
-            console.log("step",steps, typeof(steps))
         }
             catch(error){
                 document.getElementById("error").textContent = error
             }
-        console.log("before", total_steps, typeof(total_steps))
         total_steps += steps
-        console.log("after", total_steps, typeof(total_steps))
         document.getElementById("steps").textContent = "Steps: "+total_steps; 
-        console.log("after_assign", total_steps, typeof(total_steps))
         var stdout = pyodide.runPython("sys.stdout.getvalue()").replaceAll("\n","<br>")
         document.getElementById("print").innerHTML += stdout
         var stdout = pyodide.runPython("sys.stdout = io.StringIO()")

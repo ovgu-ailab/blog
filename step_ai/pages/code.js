@@ -134,7 +134,7 @@ function createHandle(resetValues=false, call_on_window_size_reached=(e)=>undefi
 
         let window_full = false;
         if(systems[0]["values"].length === window_size){
-            console.log("full")
+            console.log("full", systems[0]["values"].length )
             call_on_window_size_reached();
             if(resetValues){
                 window_full = true
