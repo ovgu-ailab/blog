@@ -163,4 +163,30 @@ function createHandle(resetValues=false, call_on_window_size_reached=(e)=>undefi
     return handleMotion
 }
 
-console.log("Loaded Code");
+
+function add_motion_eventlistner(f){
+ if (typeof DeviceMotionEvent.requestPermission === 'function') {
+  DeviceMotionEvent.requestPermission()
+   .then(permissionState => {
+   if (permissionState === 'granted') {
+    window.addEventListener('devicemotion',f );
+   }
+  })
+   .catch(console.error);
+ } else {
+    window.addEventListener('devicemotion',f );
+ }
+}
+
+function add_orientation_eventlistner(f){
+ if ( DeviceOrientationEvent.requestPermission === 'function') {
+  DeviceOrientationEvent.requestPermission()
+   .then(permissionState => {
+   if (permissionState === 'granted') {
+    window.addEventListener('deviceorientation', f);
+   }
+  })
+   .catch(console.error);
+ } else {
+    window.addEventListener('deviceorientation', f);
+ }}

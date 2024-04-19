@@ -53,13 +53,6 @@
         return runs;
     }
 
-    // Request permission for iOS 13+ devices
-    if (
-        DeviceMotionEvent &&
-        typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-        DeviceMotionEvent.requestPermission();
-    }
 
     draw_coordinate_systems();
    
@@ -127,8 +120,8 @@
                 elem["values"].length = 0;
             })
 
-            window.addEventListener("devicemotion", handleMotion);
-            window.addEventListener("deviceorientation", handleOrientation);
+        add_orientation_eventlistner(handleOrientation)
+        add_motion_eventlistner(handleMotion)
             is_recording=true;
             record_button.value = "Stop  Recording";
         }

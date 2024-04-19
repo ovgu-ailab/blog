@@ -8,6 +8,7 @@
     </head>
     <body>
         <h1> Step Counter</h1>
+        <input type="button" class="button" value="Start" ></input><br>
         <div style="float:left;">
             Programm: <div id="steps_program">0</div>
         </div>
@@ -53,11 +54,6 @@
                 pyodide.globals.set("W", ai_model["W"])
                 pyodide.globals.set("b", ai_model["b"])
 
-                handleMotion = createHandle(true, predict_both);
-                // the corresponding counters
-
-                window.addEventListener("devicemotion", handleMotion);
-                window.addEventListener("deviceorientation", handleOrientation);
             }
             setup_pyodide();
 
@@ -90,19 +86,25 @@
                 document.getElementById("steps_ki").textContent = Math.round(total_steps_ki); 
             }
 
-            // Request permission for iOS 13+ devices
-            if (
-                DeviceMotionEvent &&
-                typeof DeviceMotionEvent.requestPermission === "function"
-            ) {
-                DeviceMotionEvent.requestPermission();
-            }
 
             function predict_both(){
                 predict_steps();
                 predict_ai();
             }
 
+            function start_recording(){ 
+                total_steps_ki = 0
+                document.getElementById("steps_ki").textContent = Math.round(total_steps_ki); 
+
+                total_steps_program = 0
+                document.getElementById("steps_program").textContent = total_steps_program; 
+
+                handleMotion = createHandle(true, predict_both);
+            add_orientation_eventlistner(handleOrientation)
+            add_motion_eventlistner(handleMotion)
+            }
+
+            document.getElementsByClassName("button")[0].addEventListener("click",start_recording)
 
         </script>
     </body>

@@ -72,14 +72,6 @@ async function setup_pyodide(){
 }
 setup_pyodide();
 
-        const code = document.getElementById("python_code").textContent;
-    // Request permission for iOS 13+ devices
-    if (
-        DeviceMotionEvent &&
-        typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-        DeviceMotionEvent.requestPermission();
-    }
 
     function update_prediction_code(e){
         pyodide.runPython(document.getElementById("python_code").value)
@@ -94,14 +86,19 @@ setup_pyodide();
 
     function predict_steps(){
         const func = pyodide.globals.get("steps_made");
+        let steps;
         try{
-        const steps = func(systems[0]["values"], systems[1]["values"], systems[2]["values"],systems[3]["values"],systems[4]["values"],systems[5]["values"],systems[6]["values"],systems[7]["values"],systems[8]["values"])
+            steps = func(systems[0]["values"], systems[1]["values"], systems[2]["values"],systems[3]["values"],systems[4]["values"],systems[5]["values"],systems[6]["values"],systems[7]["values"],systems[8]["values"])
+            console.log("step",steps, typeof(steps))
         }
             catch(error){
                 document.getElementById("error").textContent = error
             }
+        console.log("before", total_steps, typeof(total_steps))
         total_steps += steps
+        console.log("after", total_steps, typeof(total_steps))
         document.getElementById("steps").textContent = "Steps: "+total_steps; 
+        console.log("after_assign", total_steps, typeof(total_steps))
         var stdout = pyodide.runPython("sys.stdout.getvalue()").replaceAll("\n","<br>")
         document.getElementById("print").innerHTML += stdout
         var stdout = pyodide.runPython("sys.stdout = io.StringIO()")
@@ -122,8 +119,8 @@ setup_pyodide();
         console.log(is_recording)
         if (!is_recording){
             console.log("start")
-            window.addEventListener("devicemotion", handleMotion);
-            window.addEventListener("deviceorientation", handleOrientation);
+            add_orientation_eventlistner(handleOrientation)
+            add_motion_eventlistner(handleMotion)
             is_recording=true;
             record_button.value = "Stop  Recording";
         }
