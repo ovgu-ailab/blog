@@ -52,7 +52,6 @@
                 const ai_model = JSON.parse(window.localStorage.getItem(STORAGE_MODEL));
                 pyodide.runPython(ai_model["code"]);
                 pyodide.globals.set("W", ai_model["W"])
-                pyodide.globals.set("b", ai_model["b"])
 
             }
             setup_pyodide();
@@ -70,21 +69,21 @@
 
             total_steps_ki = 0;
 
-            feature_order = ["acc_x", "acc_y", "acc_z", "gyr_x", "gyr_y", "gyr_z", "o_a", "o_b", "o_d"]
             function predict_ai(systems){
                 const func = pyodide.globals.get("predict");
-                // TODO prepare_data
 
                 let tmp = []
-                feature_order.forEach((w =>{
+                feature_order.forEach((item =>{
+                        w = item[0]
+                        s = item[1]
                     const key_object = systems.find((e)=>e["name"]===w);
-                    tmp.push(...key_object["values"])
+                    tmp.push(...key_object["values"].map(u=>u*s))
                 }
                 ))
                 console.log("data_length",tmp.length)
-                const steps = func(tmp)
-                total_steps_ki += steps
-                document.getElementById("steps_ki").textContent = Math.round(total_steps_ki); 
+                const steps = func([tmp])
+                total_steps_ki += Math.round(steps)
+                document.getElementById("steps_ki").textContent = total_steps_ki 
             }
 
 

@@ -1,8 +1,9 @@
 window_size = 60;
+            feature_order = [["acc_x",0.1], ["acc_y",0.1], ["acc_z",0.1], ["gyr_x",0,01], ["gyr_y",0.01], ["gyr_z",0.01], ["o_a",0.0028], ["o_b",0.0028], ["o_d",0.0028]]
 
 function update_code(code){
      let highlighted_code = hljs.highlight(code, {language: "python"}).value
-     if (highlighted_code[highlighted_code.length = 1] == "\n"){highlighted_code +=" "}
+     if (highlighted_code[highlighted_code.length - 1] == "\n"){highlighted_code +=" "}
      const result_element = document.getElementById("highlighting_content")
     result_element.innerHTML = highlighted_code;
 }
@@ -12,8 +13,10 @@ function sync_scroll() {
   let result_element = document.getElementById("highlighting");
   // Get and set x and y
   
-  result_element.scrollTop = text_element.scrollTop/ text_element.scrollHeight * result_element.scrollHeight;
+  //result_element.scrollTop = text_element.scrollTop/ text_element.scrollHeight * result_element.scrollHeight;
   //result_element.scrollLeft = text_element.scrollLeft;
+  result_element.scrollTop = text_element.scrollTop
+  result_element.scrollLeft = text_element.scrollLeft;
 }
 
 systems = [

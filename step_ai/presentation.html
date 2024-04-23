@@ -353,21 +353,43 @@ Error(f(x), y)}{\partial w}\)</span></p>
 <section id="model" class="slide level2">
 <h2>Model</h2>
 <p>Model:</p>
-<p><span class="math inline">\(f(x)_i = w_1 \cdot x_{i,1} + ... +
+<p><span class="math inline">\(v^{(i)}_1 = w_1 \cdot x_{i,1} + ... +
 w_{180} \cdot x_{i,180}\)</span></p>
+<p><span class="math inline">\(v^{(i)}_2 = v^{(i)}_1 + b\)</span></p>
+<p><span class="math inline">\(v^{(i)}_3 =
+\sigma(v^{(i)}_2)\)</span></p>
+<p><span class="math inline">\(v^{(i)}_4 = c \cdot
+v^{(i)}_3\)</span></p>
+<p><span class="math inline">\(v_5 = v^{(1)}_4 + ... +
+v^{(w)}_4\)</span></p>
 <p>Fehler:</p>
-<p><span class="math inline">\(SE(f(x), y) = ((f(x)_1 + ... + f(x)_w) -
-y)^2\)</span></p>
+<p><span class="math inline">\(SE(f(x), y) = (v_5 - y)^2\)</span></p>
+</section>
+<section id="logistische-funktion" class="slide level2">
+<h2>Logistische Funktion</h2>
+<figure>
+<img data-src="/blog/step_ai/figures/sigmoid.svg"
+alt="Logistische Funktion" />
+<figcaption aria-hidden="true">Logistische Funktion</figcaption>
+</figure>
 </section>
 <section id="gradient-1" class="slide level2">
 <h2>Gradient</h2>
-<p><span class="math inline">\(\frac{\partial SE(f(x),y) }{\partial
-w_i}\)</span></p>
-<p><span class="math inline">\(= 2 \cdot ( f(x)_1 + ... + f(x)_w - y )
-\cdot \frac{\partial ( f(x)_1 + ... + f(x)_w - y )} {\partial
-w_i}\)</span></p>
-<p><span class="math inline">\(= 2 \cdot ( f(x)_1 + ... + f(x)_w - y )
-\cdot (x_{1,i} + ... + x_{w,i})\)</span></p>
+<p><span class="math inline">\(d_v = \frac{\partial SE}{\partial
+v}\)</span></p>
+<p><span class="math inline">\(d_{v_5} = 2 (v_5 -y)\)</span></p>
+<p><span class="math inline">\(d_{v^{(i)}_4} = d_{v_5} \cdot
+1\)</span></p>
+<p><span class="math inline">\(d_{v^{(i)}_3} = d_{v^{(i)}_4} \cdot
+c\)</span></p>
+<p><span class="math inline">\(d_{v^{(i)}_2} = d_{v^{(i)}_3} \cdot
+v^{(i)}_3 \cdot (1 - v^{(i)}_3)\)</span></p>
+<p><span class="math inline">\(d_{v^{(i)}_1} = d_{v^{(i)}_2} \cdot
+1\)</span></p>
+<p><span class="math inline">\(d_{b} = d_{v^{(1)}_2} + ... +
+d_{v^{(w)}_2}\)</span></p>
+<p><span class="math inline">\(d_{w_i} = d_{v^{(1)}_1} \cdot {x_{1,1}}
++... + d_{v^{(1)}_1} \cdot {x_{1,1}}\)</span></p>
 </section>
 <section id="implementation" class="slide level2">
 <h2>Implementation</h2>

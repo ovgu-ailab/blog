@@ -24,7 +24,7 @@
         <script>
             document.getElementById("python_code").addEventListener("scroll", (e)=>{sync_scroll()});
             document.getElementById("python_code").addEventListener("input",(e)=>{sync_scroll()});
-            document.getElementById("python_code").textContent=`\nW = []\nb = []\n\ndef predict(x):\n    return 1\n\ndef train_step(x, y, epoch, run):\n    global W\n    global b\n    # forward pass\n    # backward pass\n    # gradient step`
+            document.getElementById("python_code").textContent=`\nW = []\nb = []\n\ndef predict(x):\n    return 1\n\ndef train_step(x, y, epoch, run):\n    global W\n    # forward pass\n    # backward pass\n    # gradient step`
             update_code(document.getElementById("python_code").value);
             STORAGE_KEY = "test_key1";
             STORAGE_MODEL = "ki_data_stored"
@@ -58,7 +58,6 @@
 
             setup_pyodide();
 
-            feature_order = ["acc_x", "acc_y", "acc_z", "gyr_x", "gyr_y", "gyr_z", "o_a", "o_b", "o_d"]
 
             function prepare_data(row){
                 console.log(row)
@@ -70,16 +69,18 @@
 
                 for(let  i = 0; i < Math.floor(num_windows); ++i){
                     let tmp = []
-                    feature_order.forEach((w =>{
+                    feature_order.forEach((item =>{
+                        w = item[0]
+                        s = item[1]
                         let splice = row[w].slice(i*window_size,(i+1) * window_size)
-                        tmp.push(...splice)
+                        tmp.push(...splice.map(u=>u*s))
                     }
                     ))
                     windows.push(tmp)
 
                 }
-                console.log(windows.length, windows[0].length)
-                return [windows, y]
+                console.log(windows.length, windows[0].lengt, y)
+                return [windows, parseInt(y)]
             }
 
             function permutation(arr) {
@@ -101,7 +102,6 @@
             function save_ai(){
                 const model = {
                     "W":pyodide.globals.get("W").toJs(),
-                    "b":pyodide.globals.get("b").toJs(),
                     "code":document.getElementById("python_code").value
                 }
                 window.localStorage.setItem(STORAGE_MODEL, JSON.stringify(model));
@@ -112,12 +112,14 @@
                 document.getElementById("error").textContent = ""
                 const runs =  getAllStoredRuns();
 
+                pyodide.runPython(document.getElementById("python_code").value)
+                
                 const samples = runs.map((e)=> prepare_data(e));
                 const indices = [...Array(samples.length).keys()];
                 const train_step = pyodide.globals.get("train_step")
 
                 try{
-                    for(let i = 0; i < 10; ++i){
+                    for(let i = 0; i < 100; ++i){
                         const permuted_indices = permutation(indices)
                         for(let j =0; j < samples.length; ++j){
                             const x = samples[permuted_indices[j]][0]
