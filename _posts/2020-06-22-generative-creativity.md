@@ -26,7 +26,7 @@ misguided and why resources might be better spent on other
 problems.[^1]
 
 [^1]: Besides, including detailed reviews of CC literature would
-make this post excessively long.
+      make this post excessively long.
 
 
 ## Copying Is Not Creativity
@@ -42,8 +42,8 @@ while certainly important, are not the topic of this discussion. Instead, I want
 to focus on the case where generating outputs is all we care about.
 
 [^2]: Please note, I will not be providing citations for general deep 
-learning concepts that I would believe practitioners to be familiar with, nor
-a few other things -- I'm a bit lazy and this is not a publication.
+      learning concepts that I would believe practitioners to be familiar with, nor
+      a few other things -- I'm a bit lazy and this is not a publication.
 
 While such models are mostly built and tested in the image domain (especially 
 faces), attempts at creating music "from nothing" are becoming more ambitious
@@ -67,9 +67,9 @@ sections, where I will sometimes refer to such models as _copy models_ (please
 take this as somewhat tongue-in-cheek).
 
 [^3]: To take a more extreme view: The only
-reason these models produce anything "new" is due to limited capacity and
-inherent stochasticity of the data. If they could literally copy everything
-perfectly, they would.
+      reason these models produce anything "new" is due to limited capacity and
+      inherent stochasticity of the data. If they could literally copy everything
+      perfectly, they would.
 
 Please note: I am aware that there are contexts/applications where training a
 generative model to "copy" a distribution is actually the goal, and there is
@@ -161,10 +161,10 @@ regard, it is quite telling that many symbolic models are trained on classical
 that a "sensible" sequence of symbols will sound good.[^4]
 
 [^4]: Another reason
-for the preference for such data sets is likely that they are widely available
-without copyright issues, which is a big problem with musical data. The fact
-that they use a single instrument also makes them much more straightforward to
-model.
+      for the preference for such data sets is likely that they are widely available
+      without copyright issues, which is a big problem with musical data. The fact
+      that they use a single instrument also makes them much more straightforward to
+      model.
 
 However, there is a second problem related to the interpretation of musical
 symbols, which is perhaps easier to miss. Namely, the symbols have **absolutely
@@ -215,8 +215,8 @@ _sequences_. Still, there have been examples of modeling sequences in the
  waveform domain with some success (e.g.[DAA](https://arxiv.org/abs/1806.10474)).
 
 [^5]: We can also generate audio at the
-spectrogram level. This tends to be easier, but then the problem is how to
-invert the spectrograms to audio without loss of quality.
+      spectrogram level. This tends to be easier, but then the problem is how to
+      invert the spectrograms to audio without loss of quality.
 
 Recently, OpenAI released their [Jukebox model]("https://openai.com/blog/jukebox),
 which scaled up waveform
@@ -377,9 +377,9 @@ many, many details to be considered -- but this requires research, not blog
 posts.
 
 [^6]: This would also include the creation of
-emotional music; this cannot be created without "knowledge" of emotions. Except,
-of course, if the model learns to copy a database of existing emotional 
-music -- the common approach.
+      emotional music; this cannot be created without "knowledge" of emotions. Except,
+      of course, if the model learns to copy a database of existing emotional 
+      music -- the common approach.
 
 
 ## Conclusion
