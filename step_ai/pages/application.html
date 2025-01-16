@@ -5,9 +5,20 @@
         <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
         <script src="/blog/step_ai/pages/code.js"></script>
         <link rel="stylesheet" href="style.css">
+
+    <style>
+
+</style>
     </head>
     <body>
         <h1> Step Counter</h1>
+
+        <label for="algup" class="upload">Upload Algorithm</label>
+        <input type="file" id="algup" style="opacity: 1;"><br><br>
+
+        <label for="kiup" class="upload">Upload KI</label>
+        <input type="file" id="kiup" style="opacity: 1;"><br><br><br><br>
+
         <input type="button" class="button" value="Start" ></input><br>
         <div style="float:left;">
             Programm: <div id="steps_program">0</div>
@@ -50,12 +61,38 @@
 
                 // load AI model 
                 const ai_model = JSON.parse(window.localStorage.getItem(STORAGE_MODEL));
-                pyodide.runPython(ai_model["code"]);
-                pyodide.globals.set("W", ai_model["W"])
+                pyodide.runPython(ai_model.code);
+                pyodide.globals.set("W", ai_model.W)
 
             }
             setup_pyodide();
 
+
+            // ad
+        document.getElementById('algup').addEventListener('change', function(event) {
+                function handleFileLoad(event) {
+                    let file_content = JSON.parse(event.srcElement.result);
+                    window.localStorage.setItem(STORAGE_ALGORITHM, JSON.stringify(file_content));
+                    const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_ALGORITHM));
+                    pyodide.runPython(algorithm)
+                }
+                const reader = new FileReader()
+                reader.onload = handleFileLoad;
+                reader.readAsText(event.target.files[0])
+          });
+
+        document.getElementById('kiup').addEventListener('change', function(event) {
+                function handleFileLoad(event) {
+                    let file_content = JSON.parse(event.srcElement.result);
+                    window.localStorage.setItem(STORAGE_MODEL, JSON.stringify(file_content));
+                    const ai_model = JSON.parse(window.localStorage.getItem(STORAGE_MODEL));
+                    pyodide.runPython(ai_model.code);
+                    pyodide.globals.set("W", ai_model.W)
+                }
+                const reader = new FileReader()
+                reader.onload = handleFileLoad;
+                reader.readAsText(event.target.files[0])
+          });
             // prepare data collection
 
             total_steps_program = 0
@@ -80,7 +117,6 @@
                     tmp.push(...key_object["values"].map(u=>u*s))
                 }
                 ))
-                console.log("data_length",tmp.length)
                 const steps = func([tmp])
                 total_steps_ki += Math.round(steps)
                 document.getElementById("steps_ki").textContent = total_steps_ki 
@@ -100,11 +136,12 @@
                 document.getElementById("steps_program").textContent = total_steps_program; 
 
                 handleMotion = createHandle(true, predict_both);
-            add_orientation_eventlistner(handleOrientation)
-            add_motion_eventlistner(handleMotion)
+                add_orientation_eventlistner(handleOrientation)
+                add_motion_eventlistner(handleMotion)
             }
 
             document.getElementsByClassName("button")[0].addEventListener("click",start_recording)
+
 
         </script>
     </body>
