@@ -61,8 +61,8 @@
 
                 // load AI model 
                 const ai_model = JSON.parse(window.localStorage.getItem(STORAGE_MODEL));
+                pyodide.globals.set("W", JSON.parse(ai_model.W))
                 pyodide.runPython(ai_model.code);
-                pyodide.globals.set("W", ai_model.W)
 
             }
             setup_pyodide();
@@ -86,8 +86,8 @@
                     let file_content = JSON.parse(event.srcElement.result);
                     window.localStorage.setItem(STORAGE_MODEL, JSON.stringify(file_content));
                     const ai_model = JSON.parse(window.localStorage.getItem(STORAGE_MODEL));
+                    pyodide.globals.set("W", JSON.parse(ai_model.W))
                     pyodide.runPython(ai_model.code);
-                    pyodide.globals.set("W", ai_model.W)
                 }
                 const reader = new FileReader()
                 reader.onload = handleFileLoad;
@@ -118,6 +118,7 @@
                 }
                 ))
                 const steps = func([tmp])
+                console.log(steps)
                 total_steps_ki += Math.round(steps)
                 document.getElementById("steps_ki").textContent = total_steps_ki 
             }
