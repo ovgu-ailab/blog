@@ -1,5 +1,5 @@
 window_size = 60;
-feature_order = [["acc_x",0.1], ["acc_y",0.1], ["acc_z",0.1], ["gyr_x",0,01], ["gyr_y",0.01], ["gyr_z",0.01], ["o_a",0.0028], ["o_b",0.0028], ["o_d",0.0028]]
+feature_order = [["acc_x",0.1], ["acc_y",0.1], ["acc_z",0.1], ["gyr_x",0.01], ["gyr_y",0.01], ["gyr_z",0.01], ["o_a",0.0028], ["o_b",0.0028], ["o_d",0.0028]]
 
 function update_code(code){
      let highlighted_code = hljs.highlight(code, {language: "python"}).value
