@@ -56,7 +56,7 @@
 
                 // load algorithm
                 const algorithm = JSON.parse(window.localStorage.getItem(STORAGE_ALGORITHM));
-                pyodide.runPython(algorithm)
+                pyodide.runPython(algorithm.code)
 
 
                 // load AI model 
