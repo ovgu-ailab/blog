@@ -241,9 +241,14 @@ You are basically expressing a prior belief that the "correct" model has small w
 parameter determining the strength of your belief.
 
 
-## Summary
+## Conclusion
 
 This was a first look at understanding data and models through a probabilistic lens.
+To summarize:
+- Real-life processes may be modeled as abstract probabilistic processes.
+- Given some data, we can look for the model that best fits our observations.
+- A principled way to find a good model is using maximum likelihood, optionally including a prior.
+
 We will expand upon these concepts in the class.
 For many generative models, it is possible to implement and work with them without having a solid grasp of what is
 actually going on in the background.
