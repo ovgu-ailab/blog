@@ -86,6 +86,15 @@ This means that $y$ follows a normal distribution with mean $wx + b$.
 This formulation is equivalent to the one with adding a 0-centered $\epsilon$.
 Now we can see that this kind of linear regression is a probabilistic model!
 
+You might say that this seems problematic, as we don't want to make random predictions about our data.
+But we don't have to!
+In practice, we usually just predict the mean, i.e. $wx + b$.
+You can actually justify this mathematically, as well.
+Namely, we want to make the _best_ prediction given our model, and it turns out that the mean is in fact the best
+prediction under certain assumptions about what "best" means.
+For example, we might want our prediction to minimize the expected squared error between itself and the true (random)
+value.
+
 ### Finding the Best Model
 Crucially, the formulation as a probabilistic model gives us a principled way to approach finding the best parameters.
 Since we went through these steps for the coin flip example in the las post, we will not repeat them here.
@@ -106,7 +115,7 @@ Note that we have written $\mu_i$ to denote that the mean is different for each 
 our linear model applied to $x_i$.
 Now we just have to insert the logarithm of the normal distribution:
 
-$$\sum_i -\log(\sqrt{2\pi}) -\log(\sigma) -\frac{(y_i - \mu_i)^2}{2\sigma^2}$$
+$$\sum_i -\log\left(\sqrt{2\pi}\right) -\log(\sigma) -\frac{(y_i - \mu_i)^2}{2\sigma^2}$$
 
 Earlier, we assumed that $\sigma$ is constant.
 That means we only need to optimize for the mean $\mu_i = wx_i + b$.
@@ -163,7 +172,7 @@ log-likelihood.
 For example, we may have preference (a "prior belief") for small weights.
 This could be achieved through a Gaussian prior on $w$ centered around 0, and with fixed $\sigma_w$.
 
-$$\log(p(w)) = -\log(\sqrt{2\pi}) -\log(\sigma_w) -\frac{w^2}{2\sigma_w^2}$$
+$$\log(p(w)) = -\log\left(\sqrt{2\pi}\right) -\log(\sigma_w) -\frac{w^2}{2\sigma_w^2}$$
 
 Once again removing constants and flipping the sign to turn it into a loss, we end up with just 
 
