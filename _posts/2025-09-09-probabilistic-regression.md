@@ -135,8 +135,8 @@ $$\sum_i (y_i - \mu_i)^2$$
 
 It's the sum of squared errors!
 Thus, it turns out this loss function is _not_ arbitrary.
-Optimizing the sum of squares corresponds to maximum likelihood for a model with _Gaussian likelihood_ and a 
-_fixed, constant_ $\sigma$.
+Optimizing the sum of squares corresponds to maximum likelihood for a model with _Gaussian likelihood and a 
+fixed, constant_ $\sigma$.
 
 Did that really help us?
 We wanted to use the squared error anyway!

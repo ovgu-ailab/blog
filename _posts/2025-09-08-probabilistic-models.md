@@ -205,7 +205,7 @@ We will have to choose these appropriately.
 This seems complicated. But: When taking the derivative with respect to $\theta$, the Beta function disappears completely,
 since it is independent of $\theta$.
 What we are left with then looks a lot like our previous log-likelihood!
-It turns out a Beta distribution with given $\alpha, \beta$ is equivalent to seeing $\alpha$ many heads and $\beta$ many
+It turns out a Beta distribution with given $\alpha, \beta$ is equivalent to seeing $\alpha-1$ many heads and $\beta-1$ many
 tails.
 For example, if we set $\alpha = \beta = 501$, that is the same as having seen 500 heads and tails before ever having
 seen any actual data. 
