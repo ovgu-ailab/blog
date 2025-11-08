@@ -42,7 +42,7 @@ for images with $d$ pixels.[^1]
 Accordingly, we need high-dimensional probability distributions over vectors.
 These can often be complex to evaluate, which in turn makes optimization difficult.
 
-[^1] Wherever we talk about images in this article, you could insert any other high-dimensional data structure instead.
+[^1]: Wherever we talk about images in this article, you could insert any other high-dimensional data structure instead.
 
 ### The Independence Assumption
 
